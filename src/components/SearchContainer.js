@@ -138,18 +138,6 @@ class Search extends Component {
                       cursor: "pointer",
                     }}
                   >
-                    Player ID
-                  </th>
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "5px",
-                      fontSize: "14px",
-                      fontWeight: 600,
-                      borderBottom: "2px solid #d3d3d3",
-                      cursor: "pointer",
-                    }}
-                  >
                     Player Full Name
                   </th>
                   <th
@@ -163,6 +151,18 @@ class Search extends Component {
                     }}
                   >
                     Player Team
+                  </th>
+                  <th
+                    style={{
+                      textAlign: "left",
+                      padding: "5px",
+                      fontSize: "14px",
+                      fontWeight: 600,
+                      borderBottom: "2px solid #d3d3d3",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Player ID
                   </th>
                 </tr>
               </thead>
