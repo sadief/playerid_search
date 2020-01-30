@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import * as JsSearch from "js-search"
 import playerData from "../data/players_1_30_2020.json"
 import CopyToClipboard from "react-copy-to-clipboard"
-import Axios from "axios"
 
 class Search extends Component {
   state = {
@@ -13,62 +12,35 @@ class Search extends Component {
     isError: false,
     searchQuery: "",
   }
-  /**
-   * React lifecycle method to fetch the data
-   */
+
   async componentDidMount() {
-    Axios.get("https://bvaughn.github.io/js-search/books.json")
-      .then(result => {
-        this.setState({ playerList: playerData.players })
-        this.rebuildIndex()
-      })
-      .catch(err => {
-        this.setState({ isError: true })
-        console.log("====================================")
-        console.log(`Something bad happened while fetching the data\n${err}`)
-        console.log("====================================")
-      })
+    this.setState({ playerList: playerData.players }, () => {
+      this.rebuildIndex()
+    })
   }
 
   componentDidUpdate() {
     setTimeout(() => this.setState({ copied: false }), 5000)
   }
 
-  /**
-   * rebuilds the overall index based on the options
-   */
   rebuildIndex = () => {
     const { playerList } = this.state
-    const dataToSearch = new JsSearch.Search("id")
-    /**
-     *  defines a indexing strategy for the data
-     * more about it in here https://github.com/bvaughn/js-search#configuring-the-index-strategy
-     */
+    const dataToSearch = new JsSearch.Search("full_name")
+
     dataToSearch.indexStrategy = new JsSearch.PrefixIndexStrategy()
-    /**
-     * defines the sanitizer for the search
-     * to prevent some of the words from being excluded
-     *
-     */
+
     dataToSearch.sanitizer = new JsSearch.LowerCaseSanitizer()
-    /**
-     * defines the search index
-     * read more in here https://github.com/bvaughn/js-search#configuring-the-search-index
-     */
+
     dataToSearch.searchIndex = new JsSearch.TfIdfSearchIndex("id")
 
-    dataToSearch.addIndex("full_name") // sets the index attribute for the data
-    dataToSearch.addIndex("team") // sets the index attribute for the data
+    dataToSearch.addIndex("full_name")
+    dataToSearch.addIndex("team")
     dataToSearch.addIndex("id")
 
-    dataToSearch.addDocuments(playerList) // adds the data to be searched
+    dataToSearch.addDocuments(playerList)
     this.setState({ search: dataToSearch, isLoading: false })
   }
 
-  /**
-   * handles the input change and perform a search with js-search
-   * in which the results will be added to the state
-   */
   searchData = e => {
     const { search } = this.state
     const queryResult = search.search(e.target.value)
