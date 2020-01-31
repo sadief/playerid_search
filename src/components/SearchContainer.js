@@ -20,7 +20,7 @@ class Search extends Component {
   }
 
   componentDidUpdate() {
-    setTimeout(() => this.setState({ copied: false }), 5000)
+    setTimeout(() => this.setState({ copied: false }), 10000)
   }
 
   rebuildIndex = () => {
